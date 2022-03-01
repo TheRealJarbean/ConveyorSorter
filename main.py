@@ -12,8 +12,8 @@ try:
     while True:
 
         _, frame = vid.read()
-        cv2.imshow("frame", frame)
-        cv2.waitKey(100)
+        #cv2.imshow("frame", frame)
+        #cv2.waitKey(100)
 
         b = frame[:, :, :1]
         g = frame[:, :, 1:2]
@@ -35,5 +35,8 @@ try:
         elif r_mean > g_mean and r_mean > b_mean and prevColor != 'r':
             print("Red")
             prevColor = 'r'
+
+        sleep(0.5)
+
 except KeyboardInterrupt:
     print("Program stopped.")
