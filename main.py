@@ -4,8 +4,7 @@ from gpiozero import Servo
 from time import sleep
 
 servo = Servo(25)
-val = -1
-servo.value = val
+servo.value = -1
 
 vid = cv2.VideoCapture(0)
 prevColor = ''
@@ -27,9 +26,9 @@ try:
 
         if b_mean > g_mean and b_mean > r_mean and prevColor != 'b':
             print("Blue")
-            servo.value = servo.value + 1
+            servo.value = 1
             sleep(0.5)
-            servo.value = servo.value - 1
+            servo.value = -1
             prevColor = 'b'
         elif g_mean > r_mean and g_mean > b_mean and prevColor != 'g':
             print("Green")
