@@ -12,7 +12,7 @@ while True:
     cv2.waitKey(100)
 
     b = frame[:, :, :1]
-    g = frame[:, :, 1:2]snow
+    g = frame[:, :, 1:2]
     r = frame[:, :, 2:]
 
     b_mean = np.mean(b)
