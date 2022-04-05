@@ -6,11 +6,17 @@ from wsgiref.simple_server import WSGIRequestHandler
 import cv2
 import numpy as np
 
+global lbl_currentColor
+global frm_currentColor
+
 red_enabled = True
 green_enabled = True
 blue_enabled = True
 
 def run_gui():
+    global lbl_currentColor
+    global frm_currentColor
+
     window = tk.Tk()
 
     def en_red():
@@ -59,8 +65,8 @@ def run_gui():
 
     # Create and pack left pane content
     lbl_currentColor = tk.Label(master = frm_leftpane, text = "Blue")
-    lbl_currentColor.pack()
     frm_currentColor = tk.Frame(master = frm_leftpane, background = "blue", width = 100, height = 100)
+    lbl_currentColor.pack()
     frm_currentColor.pack(fill = "both", padx = 20, pady = 20)
 
     # Create and pack enable buttons
@@ -124,8 +130,8 @@ try:
     while True:
 
         _, frame = vid.read()
-        cv2.imshow("frame", frame)
-        cv2.waitKey(100)
+        #cv2.imshow("frame", frame)
+        #cv2.waitKey(100)
 
         b = frame[:, :, :1]
         g = frame[:, :, 1:2]
@@ -135,18 +141,22 @@ try:
         g_mean = np.mean(g)
         r_mean = np.mean(r)
 
-        if b_mean > g_mean and b_mean > r_mean and prevColor != 'b':
+        if b_mean > g_mean and b_mean > r_mean and b_mean > (b_def + 10):
             print("Blue")
-            sleep(1)
-            prevColor = 'b'
-        elif g_mean > r_mean and g_mean > b_mean and prevColor != 'g':
+            lbl_currentColor["text"] = "Blue"
+            frm_currentColor["background"] = "blue"
+        elif g_mean > r_mean and g_mean > b_mean and g_mean > (g_def + 10):
             print("Green")
-            prevColor = 'g'
-        elif r_mean > g_mean and r_mean > b_mean and prevColor != 'r':
+            lbl_currentColor["text"] = "Green"
+            frm_currentColor["background"] = "green"
+        elif r_mean > g_mean and r_mean > b_mean and prevColor != 'r' and r_mean > (r_def + 10):
             print("Red")
-            prevColor = 'r'
+            lbl_currentColor["text"] = "Red"
+            frm_currentColor["background"] = "red"
+        else:
+            print("Nothing")
 
         sleep(0.25)
 
 except KeyboardInterrupt:
-    print("Program stopped.")
+    print("Program stopped.") 
