@@ -5,6 +5,7 @@ import tkinter as tk
 from wsgiref.simple_server import WSGIRequestHandler
 import cv2
 import numpy as np
+from gpiozero import Servo
 
 global lbl_currentColor
 global frm_currentColor
@@ -109,8 +110,23 @@ def run_testprint():
     print(red_enabled, green_enabled, blue_enabled)
     sleep(1)
 
+def accept():
+    print("Item accepted.")
+    servo.pulse_width = forward_width
+    sleep(10)
+    servo.pulse_width = reverse_width
+    sleep(10)
+    servo.pulse_width = stop_width
+
 # Start GUI thread
 Thread(target=run_gui).start()
+
+# Servo cofig
+servo = Servo(25)
+servo.pulse_width = 0.00142
+stop_width = 0.00142
+forward_width = 0.001
+reverse_width = 0.00184
 
 vid = cv2.VideoCapture(0)
 prevColor = ''
@@ -145,16 +161,34 @@ try:
             print("Blue")
             lbl_currentColor["text"] = "Blue"
             frm_currentColor["background"] = "blue"
+            if blue_enabled:
+                accept()
+            else:
+                print("Item rejected")
+                sleep(1)
+
         elif g_mean > r_mean and g_mean > b_mean and g_mean > (g_def + 10):
             print("Green")
             lbl_currentColor["text"] = "Green"
             frm_currentColor["background"] = "green"
+            if green_enabled:
+                accept()
+            else:
+                print("Item rejected")
+                sleep(1)
+
         elif r_mean > g_mean and r_mean > b_mean and prevColor != 'r' and r_mean > (r_def + 10):
             print("Red")
             lbl_currentColor["text"] = "Red"
             frm_currentColor["background"] = "red"
+            if red_enabled:
+                accept()
+            else:
+                print("Item rejected")
+                sleep(1)
+
         else:
-            print("Nothing")
+            #print("Nothing")
 
         sleep(0.25)
 
