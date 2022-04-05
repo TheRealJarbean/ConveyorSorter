@@ -2,60 +2,72 @@ import tkinter as tk
 
 window = tk.Tk()
 
-# Frames
-frm_leftpane = tk.Frame(master = window, width = 200, height = 60)
-frm_rightpane = tk.Frame(master = window, width = 200, height = 60)
-frm_enbuttons = tk.Frame(master = frm_rightpane, width = 200, height = 10)
-frm_disbuttons = tk.Frame(master = frm_rightpane, width = 200, height = 10)
-frm_colors = tk.Frame(master = frm_rightpane, width = 200, height = 40)
+def en_red():
+    enbuttons[0]["state"] = "disabled"
+    disbuttons[0]["state"] = "active"
 
-# Packing frames
+def en_green():
+    enbuttons[1]["state"] = "disabled"
+    disbuttons[1]["state"] = "active"
+
+def en_blue():
+    enbuttons[2]["state"] = "disabled"
+    disbuttons[2]["state"] = "active"
+
+def dis_red():
+    disbuttons[0]["state"] = "disabled"
+    enbuttons[0]["state"] = "active"
+
+def dis_green():
+    disbuttons[1]["state"] = "disabled"
+    enbuttons[1]["state"] = "active"
+
+def dis_blue():
+    disbuttons[2]["state"] = "disabled"
+    enbuttons[2]["state"] = "active"
+
+# Create primary panes
+frm_leftpane = tk.Frame(master = window, width = 500, height = 220, pady = 5)
+frm_rightpane = tk.Frame(master = window)
+
+# Pack primary panes
 frm_leftpane.pack(side = tk.LEFT)
 frm_rightpane.pack(side = tk.RIGHT)
-frm_enbuttons.pack(side = tk.TOP)
-frm_colors.pack(side = tk.TOP)
-frm_disbuttons.pack(side = tk.TOP)
 
-# Color labels
-lbl_purple = tk.Label(master = frm_colors, text = "Purple", background = "purple", width = 40, height = 40)
-lbl_blue = tk.Label(master = frm_colors, text = "Blue", background = "blue", width = 40, height = 40)
-lbl_green = tk.Label(master = frm_colors, text = "Green", background = "green", width = 40, height = 40)
-lbl_red = tk.Label(master = frm_colors, text = "Red", background = "red", width = 40, height = 40)
-lbl_yellow = tk.Label(master = frm_colors, text = "Yellow", background = "yellow", width = 40, height = 40)
+# Create and pack left pane content
+lbl_currentColor = tk.Label(master = frm_leftpane, text = "Blue")
+lbl_currentColor.pack()
+frm_currentColor = tk.Frame(master = frm_leftpane, background = "blue", width = 100, height = 100)
+frm_currentColor.pack(fill = "both", padx = 20, pady = 20)
 
-# Pack color labels
-lbl_purple.pack(side = tk.LEFT)
-lbl_blue.pack(side = tk.LEFT)
-lbl_green.pack(side = tk.LEFT)
-lbl_red.pack(side = tk.LEFT)
-lbl_yellow.pack(side = tk.LEFT)
+# Create and pack enable buttons
+enbuttons = [
+    tk.Button(master = frm_rightpane, text = "Accept", relief = tk.RAISED, width = 12, state = "disabled", height = 4, command = en_red),
+    tk.Button(master = frm_rightpane, text = "Accept", relief = tk.RAISED, width = 12, state = "disabled",  height = 4, command = en_green),
+    tk.Button(master = frm_rightpane, text = "Accept", relief = tk.RAISED, width = 12, state = "disabled",  height = 4, command = en_blue)
+]
 
-# Enable Buttons
-btn_enpurple = tk.Button(master = frm_enbuttons, text = "Accept", width = 40, height = 40)
-btn_enblue = tk.Button(master = frm_enbuttons, text = "Accept", width = 40, height = 40)
-btn_engreen = tk.Button(master = frm_enbuttons, text = "Accept", width = 40, height = 40)
-btn_enred = tk.Button(master = frm_enbuttons, text = "Accept", width = 40, height = 40)
-btn_enyellow = tk.Button(master = frm_enbuttons, text = "Accept", width = 40, height = 40)
+i = 0
+for btn in enbuttons:
+    btn.grid(row = 0, column = i)
+    i += 1
 
-# Pack enable buttons
-btn_enpurple.pack(side = tk.LEFT)
-btn_enblue.pack(side = tk.LEFT)
-btn_engreen.pack(side = tk.LEFT)
-btn_enred.pack(side = tk.LEFT)
-btn_enyellow.pack(side = tk.LEFT)
+# Create and pack color labels
+i = 0
+for color in [ "red", "green", "blue"]:
+    tk.Frame(master = frm_rightpane, background = color, width = 95, height = 95).grid(row = 1, column = i)
+    i += 1
 
-# Disable Buttons
-btn_dispurple = tk.Button(master = frm_disbuttons, text = "Reject", width = 40, height = 40)
-btn_disblue = tk.Button(master = frm_disbuttons, text = "Reject", width = 40, height = 40)
-btn_disgreen = tk.Button(master = frm_disbuttons, text = "Reject", width = 40, height = 40)
-btn_disred = tk.Button(master = frm_disbuttons, text = "Reject", width = 40, height = 40)
-btn_disyellow = tk.Button(master = frm_disbuttons, text = "Reject", width = 40, height = 40)
+# Create and pack disable buttons
+disbuttons = [
+    tk.Button(master = frm_rightpane, text = "Reject", relief = tk.RAISED, width = 12, height = 4, command = dis_red),
+    tk.Button(master = frm_rightpane, text = "Reject", relief = tk.RAISED, width = 12, height = 4, command = dis_green),
+    tk.Button(master = frm_rightpane, text = "Reject", relief = tk.RAISED, width = 12, height = 4, command = dis_blue)
+]
 
-# Pack enable buttons
-btn_dispurple.pack(side = tk.LEFT)
-btn_disblue.pack(side = tk.LEFT)
-btn_disgreen.pack(side = tk.LEFT)
-btn_disred.pack(side = tk.LEFT)
-btn_disyellow.pack(side = tk.LEFT)
+i = 0
+for btn in disbuttons:
+    btn.grid(row = 2, column = i)
+    i += 1
 
 window.mainloop()
