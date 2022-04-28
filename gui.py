@@ -112,21 +112,17 @@ def run_testprint():
 
 def accept():
     print("Item accepted.")
-    servo.pulse_width = forward_width
-    sleep(10)
-    servo.pulse_width = reverse_width
-    sleep(10)
-    servo.pulse_width = stop_width
+    servo.min()
+    sleep(0.5)
+    servo.max()
+    sleep(1)
 
 # Start GUI thread
 Thread(target=run_gui).start()
 
 # Servo cofig
 servo = Servo(25)
-servo.pulse_width = 0.00142
-stop_width = 0.00142
-forward_width = 0.001
-reverse_width = 0.00184
+servo.max()
 
 vid = cv2.VideoCapture(0)
 prevColor = ''
@@ -142,6 +138,8 @@ b_def = np.mean(b)
 g_def = np.mean(g)
 r_def = np.mean(r)
 
+print("Calibration complete.")
+
 try:
     while True:
 
@@ -156,8 +154,10 @@ try:
         b_mean = np.mean(b)
         g_mean = np.mean(g)
         r_mean = np.mean(r)
+        sensitivity = 5
 
-        if b_mean > g_mean and b_mean > r_mean and b_mean > (b_def + 10):
+        #if b_mean > g_mean and b_mean > r_mean and b_mean > (b_def + sensitivity):
+        if b_mean > (b_def + sensitivity):
             print("Blue")
             lbl_currentColor["text"] = "Blue"
             frm_currentColor["background"] = "blue"
@@ -167,7 +167,8 @@ try:
                 print("Item rejected")
                 sleep(1)
 
-        elif g_mean > r_mean and g_mean > b_mean and g_mean > (g_def + 10):
+        #elif g_mean > r_mean and g_mean > b_mean and g_mean > (g_def + sensitivity):
+        elif g_mean > (g_def + sensitivity): 
             print("Green")
             lbl_currentColor["text"] = "Green"
             frm_currentColor["background"] = "green"
@@ -177,7 +178,8 @@ try:
                 print("Item rejected")
                 sleep(1)
 
-        elif r_mean > g_mean and r_mean > b_mean and prevColor != 'r' and r_mean > (r_def + 10):
+        #elif r_mean > g_mean and r_mean > b_mean and prevColor != 'r' and r_mean > (r_def + sensitivity):
+        elif r_mean > (r_def + sensitivity): 
             print("Red")
             lbl_currentColor["text"] = "Red"
             frm_currentColor["background"] = "red"
@@ -187,7 +189,7 @@ try:
                 print("Item rejected")
                 sleep(1)
 
-        else:
+        #else:
             #print("Nothing")
 
         sleep(0.25)
