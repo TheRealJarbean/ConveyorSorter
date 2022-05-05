@@ -1,8 +1,8 @@
-from cProfile import run
+#from cProfile import run
 from threading import Thread
 from time import sleep
 import tkinter as tk
-from wsgiref.simple_server import WSGIRequestHandler
+#from wsgiref.simple_server import WSGIRequestHandler
 import cv2
 import numpy as np
 from gpiozero import Servo
